@@ -1,0 +1,109 @@
+{
+  "presets": [
+    {
+      "name": "qwen3.8_27b_Q4KM",
+      "model": "C:\\Users\\inter\\.lmstudio\\models\\unsloth\\Qwen3.8-27B-GGUF\\Qwen3.8-27B-IQ4_XS.gguf",
+      "mmproj": "C:\\Users\\inter\\.lmstudio\\models\\unsloth\\Qwen3.8-27B-GGUF\\mmproj-F16.gguf",
+      "ngl": "999",
+      "ctx": "128K",
+      "mtp": false,
+      "fa": true,
+      "ctk": "q8_0",
+      "ctv": "q8_0",
+      "np": "1",
+      "n": "2048",
+      "mtp_max": "0",
+      "server_exe": "G:/LLM/llama-b10453-bin-win-cuda-13.3-x64/llama-server.exe",
+      "cli_exe": "G:/LLM/llama-b10453-bin-win-cuda-13.3-x64/llama-cli.exe",
+      "compressor": {
+        "enabled": true,
+        "auto_trigger_pct": 80,
+        "keep_last_msgs": 6
+      }
+    },
+    {
+      "name": "qwen3.6_27b_uncen",
+      "model": "C:\\Users\\inter\\.lmstudio\\models\\unsloth\\Qwen3.8-27B-GGUF\\Qwen3.8-27B-IQ4_XS.gguf",
+      "mmproj": "C:\\Users\\inter\\.lmstudio\\models\\unsloth\\Qwen3.8-27B-GGUF\\mmproj-F16.gguf",
+      "ngl": "999",
+      "ctx": "128K",
+      "mtp": false,
+      "fa": true,
+      "ctk": "q8_0",
+      "ctv": "q8_0",
+      "np": "1",
+      "n": "2048",
+      "mtp_max": "0",
+      "server_exe": "G:/LLM/llama-b10453-bin-win-cuda-13.3-x64/llama-server.exe",
+      "cli_exe": "G:/LLM/llama-b10453-bin-win-cuda-13.3-x64/llama-cli.exe",
+      "compressor": {
+        "enabled": true,
+        "auto_trigger_pct": 80,
+        "keep_last_msgs": 6
+      }
+    },
+    {
+      "name": "qwen3.8_27b_hau_Q4KP",
+      "model": "C:/Users/inter/.lmstudio/models/HauhauCS/Qwen3.8-27B-Uncensored-HauhauCS-Aggressive-MTP-GGUF/Qwen3.8-27B-Uncensored-HauhauCS-Aggressive-Q4_K_P.gguf",
+      "mmproj": "C:/Users/inter/.lmstudio/models/HauhauCS/Qwen3.8-27B-Uncensored-HauhauCS-Aggressive-MTP-GGUF\\mmproj-Qwen3.8-27B-Uncensored-HauhauCS-Aggressive-BF16.gguf",
+      "ngl": "65",
+      "ctx": "128K",
+      "mtp": true,
+      "fa": true,
+      "ctk": "q8_0",
+      "ctv": "q8_0",
+      "np": "1",
+      "n": "2048",
+      "mtp_max": "2",
+      "server_exe": "G:/LLM/llama-b10453-bin-win-cuda-13.3-x64/llama-server.exe",
+      "cli_exe": "G:/LLM/llama-b10453-bin-win-cuda-13.3-x64/llama-cli.exe",
+      "compressor": {
+        "enabled": true,
+        "auto_trigger_pct": 80,
+        "keep_last_msgs": 6
+      }
+    },
+    {
+      "name": "qwen3.8_27b_hau_IQ4XS",
+      "model": "C:/Users/inter/.lmstudio/models/HauhauCS/Qwen3.8-27B-Uncensored-HauhauCS-Aggressive-MTP-GGUF/Qwen3.8-27B-Uncensored-HauhauCS-Aggressive-IQ4_XS.gguf",
+      "mmproj": "C:/Users/inter/.lmstudio/models/HauhauCS/Qwen3.8-27B-Uncensored-HauhauCS-Aggressive-MTP-GGUF\\mmproj-Qwen3.8-27B-Uncensored-HauhauCS-Aggressive-BF16.gguf",
+      "ngl": "65",
+      "ctx": "160K",
+      "mtp": true,
+      "fa": true,
+      "ctk": "q8_0",
+      "ctv": "q8_0",
+      "np": "1",
+      "n": "2048",
+      "mtp_max": "2",
+      "server_exe": "G:/LLM/llama-b10453-bin-win-cuda-13.3-x64/llama-server.exe",
+      "cli_exe": "G:/LLM/llama-b10453-bin-win-cuda-13.3-x64/llama-cli.exe",
+      "compressor": {
+        "enabled": true,
+        "auto_trigger_pct": 80,
+        "keep_last_msgs": 6
+      }
+    },
+    {
+      "name": "qwen3.8_27b_IQ4XS",
+      "model": "C:\\Users\\inter\\.lmstudio\\models\\unsloth\\Qwen3.8-27B-GGUF\\Qwen3.8-27B-IQ4_XS.gguf",
+      "mmproj": "C:\\Users\\inter\\.lmstudio\\models\\unsloth\\Qwen3.8-27B-GGUF\\mmproj-F16.gguf",
+      "ngl": "999",
+      "ctx": "128K",
+      "mtp": true,
+      "fa": true,
+      "ctk": "q8_0",
+      "ctv": "q8_0",
+      "np": "1",
+      "n": "2048",
+      "mtp_max": "2",
+      "server_exe": "G:/LLM/llama-b10453-bin-win-cuda-13.3-x64/llama-server.exe",
+      "cli_exe": "G:/LLM/llama-b10453-bin-win-cuda-13.3-x64/llama-cli.exe",
+      "compressor": {
+        "enabled": true,
+        "auto_trigger_pct": 80,
+        "keep_last_msgs": 6
+      }
+    }
+  ]
+}

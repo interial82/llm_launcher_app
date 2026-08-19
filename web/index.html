@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f141a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="icon" href="/icons/icon-192.png" type="image/png">
+<title>LLM Launcher</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header id="topbar">
+    <div class="brand">🤖 <span>LLM Launcher</span></div>
+    <div class="conn" id="connState">연결 확인 중…</div>
+    <button id="btnSettings" class="iconbtn" title="설정">⚙</button>
+  </header>
+
+  <main id="content">
+    <!-- ── 상태(대시보드) ── -->
+    <section id="tab-dash" class="tab active">
+      <div class="card">
+        <div class="model-row">
+          <span id="stateBadge" class="badge off">정지됨</span>
+          <span id="modelName" class="model-name">모델 없음</span>
+        </div>
+        <div id="ttlInfo" class="muted small"></div>
+        <div class="actions center">
+          <button id="btnDashLaunch" class="primary">🚀 기동 (마지막 설정)</button>
+          <button id="btnDashStop" class="danger">⏹ 중지</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>자원 사용량</h3>
+        <div class="gauges">
+          <div class="gauge">
+            <label>GPU</label>
+            <div class="bar"><div id="barGpu" class="fill gpu"></div></div>
+            <span id="valGpu" class="val">—</span>
+          </div>
+          <div class="gauge">
+            <label>GPU RAM</label>
+            <div class="bar"><div id="barGpuRam" class="fill gpumem"></div></div>
+            <span id="valGpuRam" class="val">—</span>
+          </div>
+          <div class="gauge">
+            <label>시스템 RAM</label>
+            <div class="bar"><div id="barSysRam" class="fill sysmem"></div></div>
+            <span id="valSysRam" class="val">—</span>
+          </div>
+          <div class="gauge">
+            <label>컨텍스트</label>
+            <div class="bar"><div id="barCtx" class="fill ctx"></div></div>
+            <span id="valCtx" class="val">—</span>
+          </div>
+        </div>
+        <canvas id="spark" height="80"></canvas>
+        <div class="legend">
+          <span><i class="dot gpu"></i>GPU</span>
+          <span><i class="dot gpumem"></i>GPU RAM</span>
+          <span><i class="dot sysmem"></i>시스템 RAM</span>
+          <span><i class="dot ctx"></i>컨텍스트</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>토큰 누적 (이번 실행)</h3>
+        <div id="tokenStats" class="big">—</div>
+      </div>
+    </section>
+
+    <!-- ── 모델 ── -->
+    <section id="tab-models" class="tab">
+      <div class="card">
+        <h3>모델 디렉터리</h3>
+        <div class="dirrow">
+          <input id="dirInput" type="text" spellcheck="false" placeholder="모델 디렉터리">
+          <button id="btnDirUp" class="small">⬆</button>
+          <button id="btnDirGo" class="small primary">이동</button>
+        </div>
+        <div id="dirList" class="dirlist"></div>
+        <div id="modelList" class="modellist"></div>
+        <div id="mmprojInfo" class="muted small"></div>
+      </div>
+
+      <div class="card">
+        <h3>기동 옵션</h3>
+        <div class="formgrid">
+          <label>GPU 계층 (ngl)
+            <input id="optNgl" type="text" value="999">
+          </label>
+          <label>컨텍스트 (ctx)
+            <select id="optCtx">
+              <option>8K</option><option>16K</option><option>32K</option>
+              <option>64K</option><option selected>128K</option><option>256K</option>
+            </select>
+          </label>
+          <label>캐시 타입 K (ctk)
+            <select id="optCtk">
+              <option>q8_0</option><option>f16</option><option>f32</option>
+            </select>
+          </label>
+          <label>캐시 타입 V (ctv)
+            <select id="optCtv">
+              <option>q8_0</option><option>f16</option><option>f32</option>
+            </select>
+          </label>
+          <label>스레드 (np)
+            <input id="optNp" type="text" value="1">
+          </label>
+          <label class="check"><input id="optFa" type="checkbox" checked> FlashAttn</label>
+          <label class="check"><input id="optVision" type="checkbox" checked> Vision (이미지/영상)</label>
+          <label class="check"><input id="optMtp" type="checkbox"> Draft MTP</label>
+          <label>MTP max (0=미사용)
+            <input id="optMtpMax" type="number" value="0" min="0" max="32" step="1">
+          </label>
+          <label>TTL 자동 언로드 (분, 0=해제)
+            <input id="optTtl" type="number" value="0" min="0" max="999">
+          </label>
+        </div>
+        <div class="presetrow">
+          <label>저장된 설정 (프리셋)
+            <select id="optPreset"><option value="">— 적용 안 함 —</option></select>
+          </label>
+          <span id="presetInfo" class="muted small"></span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>컨텍스트 컴프레셔</h3>
+        <div class="formgrid">
+          <label class="check"><input id="optCompressAuto" type="checkbox" checked> 자동 압축 (비율 초과 시 서버가 강제 트리거)</label>
+          <label>트리거 비율 (%)
+            <input id="optCompressPct" type="number" value="75" min="10" max="99" step="5">
+          </label>
+          <label title="압축 시 요약으로 대체하지 않고 원본 그대로 남길 최근 메시지 수 (그 이전의 메시지는 system 요약 1개로 압축)">최근 유지 개수
+            <input id="optCompressKeep" type="number" value="6" min="1" max="50" step="1">
+          </label>
+          <div class="compress-now" title="지금 이 대화 기록을 요약으로 압축합니다 (수동)">
+            <button id="btnCompressNow">🗜 지금 압축</button>
+          </div>
+        </div>
+        <div id="compressInfo" class="muted small"></div>
+      </div>
+
+      <div class="actions">
+        <button id="btnLaunch" class="primary big-btn">🚀 기동</button>
+        <button id="btnStop" class="danger big-btn">⏹ 중지</button>
+      </div>
+      <div id="modelsMsg" class="msg"></div>
+    </section>
+
+    <!-- ── 채팅 ── -->
+    <section id="tab-chat" class="tab">
+      <div id="chatMsgs" class="msgs"></div>
+      <div class="attach-row" id="attachRow" hidden>
+        <span id="attachName" class="small"></span>
+        <button id="btnRemoveAttach" class="iconbtn">✕</button>
+      </div>
+      <div class="chat-opts">
+        <select id="reasoningEffort">
+          <option value="">추론: 기본</option>
+          <option value="minimal">minimal</option>
+          <option value="low">low</option>
+          <option value="medium">medium</option>
+          <option value="high">high</option>
+          <option value="xhigh">xhigh</option>
+        </select>
+        <select id="maxTokens">
+          <option value="1024">1K</option>
+          <option value="2048">2K</option>
+          <option value="4096" selected>4K</option>
+          <option value="8192">8K</option>
+          <option value="16384">16K</option>
+        </select>
+        <label class="chat-opt">추론<input id="optThinking" type="checkbox" checked></label>
+        <label class="chat-opt">온도<input id="optTemp" type="number" value="0.7" min="0" max="2" step="0.1"></label>
+        <label class="chat-opt">top_p<input id="optTopP" type="number" value="0.95" min="0" max="1" step="0.05"></label>
+        <button id="btnCompress" class="small" title="대화 압축 (컨텍스트 절약)">🗜 압축</button>
+        <button id="btnClearChat" class="small">🗑 새 대화</button>
+      </div>
+      <div class="composer">
+        <input type="file" id="fileInput" accept="image/*" hidden>
+        <button id="btnAttach" class="iconbtn" title="이미지 첨부">📎</button>
+        <textarea id="chatInput" rows="1" placeholder="메시지 입력 (Enter 전송)"></textarea>
+        <button id="btnSend" class="primary">전송</button>
+        <button id="btnStopGen" class="danger" hidden>중지</button>
+      </div>
+    </section>
+
+    <!-- ── 로그 ── -->
+    <section id="tab-logs" class="tab">
+      <div class="card logcard">
+        <div class="loghead">
+          <span id="logState" class="muted small">연결 중…</span>
+          <button id="btnClearLogs" class="small">지우기</button>
+        </div>
+        <div id="logView" class="logview"></div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="tabbar">
+    <button data-tab="dash" class="active">📊<span>상태</span></button>
+    <button data-tab="models">📦<span>모델</span></button>
+    <button data-tab="chat">💬<span>채팅</span></button>
+    <button data-tab="logs">📜<span>로그</span></button>
+  </nav>
+
+  <!-- ── 설정 모달 ── -->
+  <div id="settingsOverlay" class="overlay" hidden>
+    <div class="dialog">
+      <h3>설정</h3>
+      <label>서버 주소
+        <input id="setUrl" type="text" placeholder="http://192.168.0.12:8080" spellcheck="false">
+      </label>
+      <label>API 키 (선택)
+        <input id="setKey" type="password" placeholder="config.json의 api_key와 동일">
+      </label>
+      <div class="row">
+        <button id="btnSaveSet" class="primary">저장</button>
+        <button id="btnTestSet">연결 테스트</button>
+      </div>
+      <div id="setMsg" class="muted small"></div>
+      <div id="setIps" class="ips"></div>
+      <button id="btnCloseSet" class="iconbtn close">✕</button>
+    </div>
+  </div>
+
+  <script src="/app.js?v=11"></script>
+</body>
+</html>

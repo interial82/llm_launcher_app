@@ -1,0 +1,35 @@
+{
+  "host": "0.0.0.0",
+  "port": 8091,
+  "api_key": "",
+  "server_exe": "",
+  "models_dir": "",
+  "compressor": {
+    "enabled": true,
+    "auto_trigger_pct": 80,
+    "keep_last_msgs": 6
+  },
+  "defaults": {
+    "ngl": "999",
+    "ctx": "128K",
+    "fa": true,
+    "ctk": "q8_0",
+    "ctv": "q8_0",
+    "np": "1",
+    "mtp": false,
+    "vision": true,
+    "ttl_min": 0
+  },
+  "last_launch": {
+    "model": "C:\\Users\\inter\\.lmstudio\\models\\unsloth\\Qwen3.8-27B-GGUF\\Qwen3.8-27B-IQ4_XS.gguf",
+    "ngl": "999",
+    "ctx": "128K",
+    "fa": true,
+    "ctk": "q8_0",
+    "ctv": "q8_0",
+    "np": "1",
+    "mtp": true,
+    "vision": true,
+    "ttl_min": 1
+  }
+}
